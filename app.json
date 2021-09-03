@@ -22,8 +22,10 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      }
+        "backgroundColor": "#FFFFFF",
+      },
+      "package": "kalkvuelator.daklo",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./assets/favicon.png"
