@@ -1,71 +1,68 @@
 <template>
   <view class="container">
-    <view><text class="title">Kalk-Vue-Lator</text></view>
-    <view class="result-container"
-      ><text class="result-text">{{ result }}</text></view
-    >
+    <view>
+      <text class="title">Kalk-Vue-Lator</text>
+    </view>
+    <view class="display-container">
+      <text class="display-text">{{ test }}</text></view>
     <view class="button-container">
       <view class="button-sub-container"
-        ><TouchableOpacity class="button-style">
+        ><TouchableOpacity class="button-style" @press="addSymbol(7)">
           <Text class="button-text">7</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(8)">
           <Text class="button-text">8</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(9)">
           <Text class="button-text">9</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style button-color-gray">
+        <TouchableOpacity class="button-style button-color-gray" @press="removeSymbol()">
           <Text class="button-text button-text-white">DEL</Text>
-        </TouchableOpacity></view
-      >
+        </TouchableOpacity></view>
       <view class="button-sub-container"
-        ><TouchableOpacity class="button-style">
+        ><TouchableOpacity class="button-style" @press="addSymbol(4)">
           <Text class="button-text">4</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(5)">
           <Text class="button-text">5</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(6)">
           <Text class="button-text">6</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="chooseOperator('+')">
           <Text class="button-text">+</Text>
-        </TouchableOpacity></view
-      >
+        </TouchableOpacity></view>
       <view class="button-sub-container"
-        ><TouchableOpacity class="button-style">
+        ><TouchableOpacity class="button-style" @press="addSymbol(1)">
           <Text class="button-text">1</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(2)">
           <Text class="button-text">2</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(3)">
           <Text class="button-text">3</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="chooseOperator('-')">
           <Text class="button-text">-</Text>
-        </TouchableOpacity></view
-      >
+        </TouchableOpacity></view>
       <view class="button-sub-container"
-        ><TouchableOpacity class="button-style">
+        ><TouchableOpacity class="button-style" @press="addSymbol('.')">
           <Text class="button-text">.</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="addSymbol(0)">
           <Text class="button-text">0</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="chooseOperator('/')">
           <Text class="button-text">/</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style">
+        <TouchableOpacity class="button-style" @press="chooseOperator('x')">
           <Text class="button-text">x</Text>
-        </TouchableOpacity></view
-      >
+        </TouchableOpacity></view>
       <view class="button-sub-container"
-        ><TouchableOpacity class="button-style button-big button-color-gray">
+        ><TouchableOpacity class="button-style button-big button-color-gray" @press="resetDisplay()">
           <Text class="button-text button-text-white">RESET</Text>
         </TouchableOpacity>
-        <TouchableOpacity class="button-style button-big button-color-red">
+        <TouchableOpacity class="button-style button-big button-color-red" @press="doTheMath()">
           <Text class="button-text button-text-white">=</Text>
         </TouchableOpacity>
     </view>
@@ -76,14 +73,54 @@
 export default {
   data() {
     return {
-      message: "Hello World",
-      result: 1337.355,
+      displaySwitch: false,
+      display: "",
+      beforeOperator: "",
+      afterOperator: "",
+      operator: ""
     };
   },
   methods: {
-    exclaim() {
-      this.message += "!";
+    addSymbol(symbol) {
+      this.display += symbol
     },
+    removeSymbol() {
+     this.display = this.display.substring(0, this.display.length -1)
+    },
+    resetDisplay() {
+      this.displaySwitch = false
+      this.display = ""
+      this.beforeOperator = ""
+      this.afterOperator = ""
+    },
+    chooseOperator(operator) {
+      this.operator = operator
+      this.display = ''
+      this.displaySwitch = true
+    },
+    doTheMath() {
+      this.displaySwitch = false
+      var before = parseFloat(this.beforeOperator)
+      var after = parseFloat(this.afterOperator)
+      if (this.operator === "+") {
+        this.display = before + after
+      } else if (this.operator === "-") {
+        this.display = before - after
+      } else if (this.operator === "x") {
+        this.display = before * after
+      } else if (this.operator === "/") {
+        this.display = before / after
+      }
+    }
+  },
+  computed: {
+    test: function() {
+      if (this.displaySwitch === false) {
+        return this.beforeOperator = this.display
+      } else if(this.displaySwitch === true) {
+        return this.afterOperator = this.display
+      }
+    }
   },
 };
 </script>
@@ -102,7 +139,7 @@ export default {
   line-height: 35px;
   font-size: 32px;
 }
-.result-container {
+.display-container {
   background-color: #181f33;
   border-radius: 10px;
   min-width: 100%;
@@ -112,7 +149,7 @@ export default {
   margin-right: 0;
 
 }
-.result-text {
+.display-text {
   font-size: 32px;
   font-weight: 700;
   line-height: 36px;
@@ -124,7 +161,6 @@ export default {
   border-radius: 10px;
   padding: 18px;
   margin-top: 24px;
-  /* display: grid; */
 }
 .button-sub-container {
   flex: 1;
